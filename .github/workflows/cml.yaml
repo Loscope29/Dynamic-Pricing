@@ -1,0 +1,118 @@
+name: Pricing Optimization CML
+
+# Reentraine le moteur de pricing a chaque pull request et poste le rapport
+# en commentaire. L'entrainement part du panel traite versionne
+# (data/processed/) : les CSV Olist bruts (~125 Mo) ne sont pas necessaires,
+# seule leur agregation l'est.
+#
+# Ce que le commentaire permet de voir en un coup d'oeil sur une PR :
+#   - le modele retenu a-t-il change, et pourquoi ;
+#   - l'elasticite estimee a-t-elle bouge (signal de derive des donnees) ;
+#   - la politique tarifaire recommande-t-elle des mouvements differents.
+
+on:
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  train:
+    name: Reentrainement et rapport CML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Set up CML
+        uses: iterative/setup-cml@v2
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Reestimer les elasticites
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m optimization_pricing.elasticity 2>&1 | tee elasticity.log
+
+      - name: Reentrainer le modele de demande
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m optimization_pricing.modeling.train 2>&1 | tee training.log
+
+      - name: Generer le rapport et les figures
+        run: python -m optimization_pricing.reporting
+
+      - name: Publier le commentaire CML
+        if: always() && github.event_name == 'pull_request'
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          if [ ! -f report.md ]; then
+            {
+              echo "# Rapport d'entrainement -- moteur de pricing"
+              echo
+              echo "L'entrainement n'a pas produit de rapport. Journal :"
+              echo
+              echo '```text'
+              tail -n 60 training.log 2>/dev/null || echo "aucun journal disponible"
+              echo '```'
+            } > report.md
+          fi
+
+          {
+            echo
+            echo "## Figures"
+            echo
+            for figure in reports/figures/03_estimator_comparison.png \
+                          reports/figures/08_model_diagnostics.png \
+                          reports/figures/06_policy_distribution.png; do
+              if [ -f "$figure" ]; then
+                echo "### $(basename "$figure" .png)"
+                cml publish "$figure" --md >> report.md
+                echo
+              fi
+            done
+            echo
+            echo "<details><summary>Journal d'entrainement</summary>"
+            echo
+            echo '```text'
+            tail -n 40 training.log 2>/dev/null
+            echo '```'
+            echo
+            echo "</details>"
+            echo
+            echo "_Commit \`${GITHUB_SHA::7}\`_"
+          } >> report.md
+
+          cml comment create report.md
+
+      - name: Archiver les artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pricing-artifacts
+          path: |
+            models/metrics.json
+            models/elasticities.json
+            models/pricing_policy.csv
+            reports/rapport_pricing.md
+            reports/figures/
+          if-no-files-found: warn
+          retention-days: 14

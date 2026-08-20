@@ -1,0 +1,65 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "optimization_pricing"
+version = "1.0.0"
+description = "Moteur de tarification dynamique sur la marketplace Olist : prevision de demande, estimation d'elasticite-prix et optimisation du profit."
+authors = [{ name = "Darryl" }]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+
+[tool.ruff]
+line-length = 99
+target-version = "py311"
+# Le lint couvre tout le projet, pas seulement le package : l'API, le
+# dashboard et les tests font partie du livrable.
+include = ["pyproject.toml", "optimization_pricing/**/*.py", "api/**/*.py", "streamlit_app/**/*.py", "tests/**/*.py"]
+exclude = [".venv", "notebooks", "data", "mlruns", "mlartifacts"]
+
+[tool.ruff.lint]
+# Selection explicite : les regles par defaut de ruff evoluent d'une version a
+# l'autre, ce qui ferait passer la CI du vert au rouge sans changement de code.
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # bugbear
+    "C4",  # comprehensions
+    "SIM", # simplifications
+    "RUF", # regles ruff
+]
+ignore = [
+    "E501",    # longueur de ligne geree par le formateur
+    "B008",    # appel de fonction en valeur par defaut : idiome FastAPI (Depends)
+    "RUF001",  # caracteres ambigus : les textes metier sont en francais
+    "RUF002",
+    "RUF003",
+    "SIM105",  # contextlib.suppress moins lisible que try/except ici
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Les scripts de reporting et de service doivent degrader proprement plutot
+# que de tomber : un `except Exception` y est un choix, pas un oubli.
+"optimization_pricing/reporting.py" = ["BLE001"]
+"optimization_pricing/service.py" = ["BLE001"]
+"streamlit_app/*.py" = ["BLE001", "E402"]
+"tests/*.py" = ["B011"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["optimization_pricing", "api", "streamlit_app"]
+force-sort-within-sections = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]

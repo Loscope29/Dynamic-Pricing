@@ -1,0 +1,292 @@
+{
+  "estimators": {
+    "pooled_ols": {
+      "method": "OLS poolee (aucun controle)",
+      "elasticity": -0.019986210892476722,
+      "std_error": 0.0044245405262767845,
+      "p_value": 6.268435182171222e-06,
+      "n_obs": 28636,
+      "r2": 0.0006154010209509231
+    },
+    "category_fe": {
+      "elasticity": -0.02428916046478348,
+      "std_error": 0.03628765699458137,
+      "t_stat": -0.6693504755187264,
+      "p_value": 0.5032719354181795,
+      "n_obs": 2232,
+      "n_absorbed": 43,
+      "r2_within": 0.3413711275814737,
+      "method": "Effets fixes categorie + mois (panel categorie x semaine)"
+    },
+    "product_fe": {
+      "elasticity": -0.7483309212025899,
+      "std_error": 0.050320169449074546,
+      "t_stat": -14.87139112200173,
+      "p_value": 5.055189790356781e-50,
+      "n_obs": 28636,
+      "n_absorbed": 5952,
+      "r2_within": 0.014980233017454325,
+      "method": "Effets fixes produit + mois (panel produit x mois)"
+    },
+    "poisson_ppml": {
+      "method": "Poisson PPML, effets fixes produit + mois (top 600 produits)",
+      "elasticity": -1.810632508412381,
+      "std_error": 0.1876509510256892,
+      "p_value": 4.966710875839801e-22,
+      "n_obs": 5622,
+      "n_products": 600
+    },
+    "double_ml_naive": {
+      "method": "DoubleML PLR sans absorption des effets fixes (piege pedagogique)",
+      "elasticity": -0.11318727890188479,
+      "std_error": 0.010452121536008194,
+      "p_value": 2.5055143528209427e-27,
+      "n_obs": 28636,
+      "confidence_interval": [
+        -0.13367306067449633,
+        -0.09270149712927325
+      ]
+    },
+    "double_ml": {
+      "method": "DoubleML PLR apres absorption des effets fixes produit + mois",
+      "elasticity": -0.7446577411806539,
+      "std_error": 0.04428186746456558,
+      "p_value": 1.8534041435711407e-63,
+      "n_obs": 28636,
+      "confidence_interval": [
+        -0.8314486065793785,
+        -0.6578668757819293
+      ]
+    }
+  },
+  "within_price_variance_share": 0.008208228272460595,
+  "reference_elasticity": -0.7483309212025899,
+  "reference_method": "Effets fixes produit + mois (panel produit x mois)",
+  "by_category": {
+    "watches_gifts": {
+      "elasticity_raw": -1.38735838131262,
+      "std_error": 0.19141795612397328,
+      "shrinkage_weight": 0.8277384357097035,
+      "elasticity": -1.277278511409611,
+      "is_elastic": true,
+      "n_obs": 1549
+    },
+    "bed_bath_table": {
+      "elasticity_raw": -1.33590371997377,
+      "std_error": 0.192276984643353,
+      "shrinkage_weight": 0.8264577653529617,
+      "elasticity": -1.2339350234572048,
+      "is_elastic": true,
+      "n_obs": 3280
+    },
+    "luggage_accessories": {
+      "elasticity_raw": -1.5574791527365823,
+      "std_error": 0.5046993102015878,
+      "shrinkage_weight": 0.4087043980258887,
+      "elasticity": -1.0790333620854027,
+      "is_elastic": true,
+      "n_obs": 261
+    },
+    "office_furniture": {
+      "elasticity_raw": -1.2968564660855908,
+      "std_error": 0.39169223931109226,
+      "shrinkage_weight": 0.5343579892389536,
+      "elasticity": -1.0414399284124718,
+      "is_elastic": true,
+      "n_obs": 560
+    },
+    "toys": {
+      "elasticity_raw": -1.0643464032468164,
+      "std_error": 0.24909739644493828,
+      "shrinkage_weight": 0.7394118341738964,
+      "elasticity": -0.9819965084082594,
+      "is_elastic": false,
+      "n_obs": 1035
+    },
+    "cool_stuff": {
+      "elasticity_raw": -1.0876418999848223,
+      "std_error": 0.32361824549640855,
+      "shrinkage_weight": 0.6270244358961027,
+      "elasticity": -0.9610871962668737,
+      "is_elastic": false,
+      "n_obs": 1093
+    },
+    "garden_tools": {
+      "elasticity_raw": -0.9786319884067521,
+      "std_error": 0.3428772216949968,
+      "shrinkage_weight": 0.599613963763708,
+      "elasticity": -0.8864226569678897,
+      "is_elastic": false,
+      "n_obs": 573
+    },
+    "health_beauty": {
+      "elasticity_raw": -0.8879294661257583,
+      "std_error": 0.16816260094906715,
+      "shrinkage_weight": 0.8616114363041926,
+      "elasticity": -0.8686106239998164,
+      "is_elastic": false,
+      "n_obs": 2196
+    },
+    "perfumery": {
+      "elasticity_raw": -0.9391448572790272,
+      "std_error": 0.3229878367153252,
+      "shrinkage_weight": 0.6279360096440095,
+      "elasticity": -0.8681498628068951,
+      "is_elastic": false,
+      "n_obs": 803
+    },
+    "books_general_interest": {
+      "elasticity_raw": -1.2032196018638666,
+      "std_error": 0.7187966506779273,
+      "shrinkage_weight": 0.2541584568196007,
+      "elasticity": -0.8639447263041641,
+      "is_elastic": false,
+      "n_obs": 159
+    },
+    "furniture_decor": {
+      "elasticity_raw": -0.7701487155119279,
+      "std_error": 0.21667565201788294,
+      "shrinkage_weight": 0.7894807995906701,
+      "elasticity": -0.7655556508992308,
+      "is_elastic": false,
+      "n_obs": 2031
+    },
+    "computers_accessories": {
+      "elasticity_raw": -0.7403914716780997,
+      "std_error": 0.15736354719020287,
+      "shrinkage_weight": 0.8766934988896081,
+      "elasticity": -0.7413704574197072,
+      "is_elastic": false,
+      "n_obs": 1844
+    },
+    "small_appliances": {
+      "elasticity_raw": -0.5888721105306134,
+      "std_error": 0.6410838009135488,
+      "shrinkage_weight": 0.29991164660532965,
+      "elasticity": -0.7005073667282299,
+      "is_elastic": false,
+      "n_obs": 221
+    },
+    "consoles_games": {
+      "elasticity_raw": -0.6094978522369942,
+      "std_error": 0.3630604646038806,
+      "shrinkage_weight": 0.5718646517409794,
+      "elasticity": -0.6689371965684481,
+      "is_elastic": false,
+      "n_obs": 257
+    },
+    "housewares": {
+      "elasticity_raw": -0.6554532234827274,
+      "std_error": 0.17078073656530499,
+      "shrinkage_weight": 0.8578858885506284,
+      "elasticity": -0.668652454967649,
+      "is_elastic": false,
+      "n_obs": 1718
+    },
+    "construction_tools_construction": {
+      "elasticity_raw": -0.21592429830395252,
+      "std_error": 0.8476425907591748,
+      "shrinkage_weight": 0.1968157057404083,
+      "elasticity": -0.6435449359759272,
+      "is_elastic": false,
+      "n_obs": 189
+    },
+    "baby": {
+      "elasticity_raw": -0.5394779690237647,
+      "std_error": 0.2075380962198558,
+      "shrinkage_weight": 0.8034458622084514,
+      "elasticity": -0.5805288809644932,
+      "is_elastic": false,
+      "n_obs": 1000
+    },
+    "electronics": {
+      "elasticity_raw": -0.46635997895221504,
+      "std_error": 0.2776563103871904,
+      "shrinkage_weight": 0.6954732526247134,
+      "elasticity": -0.5522276728500665,
+      "is_elastic": false,
+      "n_obs": 872
+    },
+    "auto": {
+      "elasticity_raw": -0.42879295595041583,
+      "std_error": 0.32727925605171404,
+      "shrinkage_weight": 0.6217479795476017,
+      "elasticity": -0.5496588369182989,
+      "is_elastic": false,
+      "n_obs": 948
+    },
+    "home_appliances": {
+      "elasticity_raw": -0.3071955617973464,
+      "std_error": 0.4091723429765145,
+      "shrinkage_weight": 0.5125795578569278,
+      "elasticity": -0.5222139537235932,
+      "is_elastic": false,
+      "n_obs": 164
+    },
+    "pet_shop": {
+      "elasticity_raw": -0.25717531558112344,
+      "std_error": 0.3487283482305814,
+      "shrinkage_weight": 0.5914626622167988,
+      "elasticity": -0.45783071913901324,
+      "is_elastic": false,
+      "n_obs": 565
+    },
+    "telephony": {
+      "elasticity_raw": -0.38664353991980427,
+      "std_error": 0.17494300607834626,
+      "shrinkage_weight": 0.8519125946704146,
+      "elasticity": -0.44020488575442446,
+      "is_elastic": false,
+      "n_obs": 1271
+    },
+    "fashion_bags_accessories": {
+      "elasticity_raw": -0.30926001693397503,
+      "std_error": 0.19976383366761552,
+      "shrinkage_weight": 0.8152257208408169,
+      "elasticity": -0.390389026769979,
+      "is_elastic": false,
+      "n_obs": 637
+    },
+    "sports_leisure": {
+      "elasticity_raw": -0.2783589620668311,
+      "std_error": 0.2151741194729968,
+      "shrinkage_weight": 0.7917830105140861,
+      "elasticity": -0.37621510854087575,
+      "is_elastic": false,
+      "n_obs": 2551
+    },
+    "furniture_living_room": {
+      "elasticity_raw": 0.5461753763420056,
+      "std_error": 0.6221663208017116,
+      "shrinkage_weight": 0.3126384174701493,
+      "elasticity": -0.3436185209331053,
+      "is_elastic": false,
+      "n_obs": 163
+    },
+    "musical_instruments": {
+      "elasticity_raw": 0.036674388002729374,
+      "std_error": 0.21770941116270692,
+      "shrinkage_weight": 0.7878943228607375,
+      "elasticity": -0.12982969466418104,
+      "is_elastic": false,
+      "n_obs": 218
+    },
+    "stationery": {
+      "elasticity_raw": 0.2802188350557705,
+      "std_error": 0.3313669485219233,
+      "shrinkage_weight": 0.6158922708951632,
+      "elasticity": -0.11485507609196174,
+      "is_elastic": false,
+      "n_obs": 723
+    },
+    "home_confort": {
+      "elasticity_raw": 0.7217772098808873,
+      "std_error": 0.2928746294622505,
+      "shrinkage_weight": 0.6724115484114189,
+      "elasticity": -0.05,
+      "is_elastic": false,
+      "n_obs": 123
+    }
+  },
+  "fallback_elasticity": -0.7483309212025899
+}

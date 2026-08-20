@@ -1,0 +1,33 @@
+# Donnees brutes et intermediaires : les images embarquent les artefacts
+# entraines et le panel traite, pas les 125 Mo de CSV Olist.
+data/raw/
+data/interim/
+data/external/
+
+# Suivi d'experiences local
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Notebooks et rapports : hors du perimetre d'execution des services
+notebooks/
+reports/
+docs/
+references/
+
+# Environnements et caches
+.venv/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Outillage
+.git/
+.github/
+.vscode/
+tests/
+Makefile
