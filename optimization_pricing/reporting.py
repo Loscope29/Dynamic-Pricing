@@ -263,6 +263,89 @@ modele :
 """
 
 
+def section_executive(artifacts: dict, cost_ratio: float) -> str:
+    elast = artifacts.get("elasticities", {})
+    policy = artifacts.get("policy")
+
+    elasticity = elast.get("reference_elasticity")
+    elasticity_txt = f"{elasticity:.2f}" if elasticity is not None else "n/a"
+    share = elast.get("within_price_variance_share")
+    share_txt = f"{share:.1%}" if share is not None else "n/a"
+
+    policy_txt = ""
+    if policy is not None and not policy.empty:
+        profit_uplift = policy["expected_profit"].sum() / policy["ref_profit"].sum() - 1
+        revenue_uplift = policy["expected_revenue"].sum() / policy["ref_revenue"].sum() - 1
+        volume_change = policy["expected_quantity"].sum() / policy["ref_quantity"].sum() - 1
+        ceiling = (
+            policy["at_price_ceiling"].mean()
+            if "at_price_ceiling" in policy
+            else np.nan
+        )
+        policy_txt = f"""
+| Indicateur | Resultat modele | Lecture direction |
+|---|---:|---|
+| Portefeuille | {len(policy):,} produits | Périmètre du test proposé |
+| Variation médiane | {_fmt_pct(policy["price_change"].median())} | La hausse est rapidement plafonnée |
+| Profit simulé | {_fmt_pct(profit_uplift)} | Potentiel économique, à valider |
+| Chiffre d'affaires simulé | {_fmt_pct(revenue_uplift)} | Effet positif estimé |
+| Volume simulé | {_fmt_pct(volume_change)} | Baisse attendue du volume |
+| Produits au plafond | {ceiling:.0%} | L'optimum dépasse la bande autorisée |
+"""
+
+    return f"""## Synthèse exécutive
+
+### Décision proposée
+
+**Autoriser un pilote tarifaire contrôlé, sans déploiement généralisé.**
+
+Le moteur indique une orientation haussière globale sous l'hypothèse de marge
+brute retenue ({1 - cost_ratio:.0%}). Toutefois, la recommandation ne doit pas
+être traitée comme une hausse automatique : elle repose sur une élasticité
+observée de **{elasticity_txt}**, sur des coûts non publiés et sur une
+simulation interne du profit.
+
+{policy_txt}
+
+### Pourquoi agir maintenant
+
+- Le catalogue présente peu de variations de prix intra-produit : seulement
+  **{share_txt}** de la variance du log-prix est exploitable pour isoler une
+  réaction causale à la hausse ou la baisse.
+- Les effets fixes produit × mois donnent une direction cohérente avec le
+  modèle de demande retenu et avec DoubleML après absorption des effets fixes.
+- Le gain potentiel est concentré sur quelques catégories à fort volume ; il
+  peut être testé sans exposer l'ensemble du portefeuille.
+
+### Risques et décision gate
+
+| Risque | Niveau | Règle de décision |
+|---|---|---|
+| Coût réel inconnu | Élevé | Valider les coûts produit par catégorie avant toute extension |
+| Recommandation au plafond | Élevé | Aucun automatisme +25 % sans mesure A/B |
+| Uplift auto-évalué | Élevé | Ne pas engager de cible de résultat hors test |
+| Effet concurrentiel ou durable | Moyen | Observer au moins deux mois et suivre les retours |
+| Extrapolation hors données | Élevé | Paliers de +5 %, +12 %, puis +25 % maximum |
+
+### Plan de déploiement recommandé
+
+1. **Vague 1 -- test :** 10 à 20 % du portefeuille, répartis par catégories,
+   avec allocation aléatoire entre produits traités et témoins.
+2. **Amortissement :** commencer à +12,5 % en moyenne, avec une bande entre
+   zéro et +25 % au maximum.
+3. **Mesure :** profit, marge réelle, volume, chiffre d'affaires, conversion,
+   annulation et retour concurrent ; durée minimale de deux mois.
+4. **Critère d'extension :** hausse statistiquement significative du profit
+   observé, sans dégradation commerciale anormale et sans coût caché.
+5. **Réestimation :** mettre à jour l'élasticité après chaque vague afin que
+   les prix observés du test deviennent de nouvelles données intra-produit.
+
+**Conclusion :** le projet fournit une boussole économique crédible, mais pas
+encore une preuve de rentabilité. La décision attendue est donc un pilote
+financé et mesurable, pas un déploiement tarifaire immédiat.
+"""
+
+
 # --------------------------------------------------------------------------- #
 # Assemblage
 # --------------------------------------------------------------------------- #
@@ -284,6 +367,7 @@ Predire la demande en fonction du prix, puis choisir le prix qui maximise le
 profit `(prix - cout) x demande(prix)` -- sous des contraintes qui empechent le
 moteur de sortir du domaine ou il a appris.
 
+{section_executive(artifacts, cost_ratio)}
 {section_elasticity(artifacts, cost_ratio)}
 {section_model(artifacts)}
 {section_policy(artifacts, cost_ratio)}

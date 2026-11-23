@@ -1,6 +1,6 @@
 # Optimisation tarifaire -- marketplace Olist
 
-_Rapport genere automatiquement le 2026-08-20 08:44 UTC a partir des artefacts du
+_Rapport genere automatiquement le 2026-11-23 19:45 UTC a partir des artefacts du
 pipeline. Les chiffres sont ceux du modele actuellement en service._
 
 ## Le probleme, en une phrase
@@ -8,6 +8,66 @@ pipeline. Les chiffres sont ceux du modele actuellement en service._
 Predire la demande en fonction du prix, puis choisir le prix qui maximise le
 profit `(prix - cout) x demande(prix)` -- sous des contraintes qui empechent le
 moteur de sortir du domaine ou il a appris.
+
+## Synthèse exécutive
+
+### Décision proposée
+
+**Autoriser un pilote tarifaire contrôlé, sans déploiement généralisé.**
+
+Le moteur indique une orientation haussière globale sous l'hypothèse de marge
+brute retenue (40%). Toutefois, la recommandation ne doit pas
+être traitée comme une hausse automatique : elle repose sur une élasticité
+observée de **-0.75**, sur des coûts non publiés et sur une
+simulation interne du profit.
+
+
+| Indicateur | Resultat modele | Lecture direction |
+|---|---:|---|
+| Portefeuille | 1,423 produits | Périmètre du test proposé |
+| Variation médiane | +25.0% | La hausse est rapidement plafonnée |
+| Profit simulé | +35.3% | Potentiel économique, à valider |
+| Chiffre d'affaires simulé | +7.7% | Effet positif estimé |
+| Volume simulé | -10.4% | Baisse attendue du volume |
+| Produits au plafond | 85% | L'optimum dépasse la bande autorisée |
+
+
+### Pourquoi agir maintenant
+
+- Le catalogue présente peu de variations de prix intra-produit : seulement
+  **0.8%** de la variance du log-prix est exploitable pour isoler une
+  réaction causale à la hausse ou la baisse.
+- Les effets fixes produit × mois donnent une direction cohérente avec le
+  modèle de demande retenu et avec DoubleML après absorption des effets fixes.
+- Le gain potentiel est concentré sur quelques catégories à fort volume ; il
+  peut être testé sans exposer l'ensemble du portefeuille.
+
+### Risques et décision gate
+
+| Risque | Niveau | Règle de décision |
+|---|---|---|
+| Coût réel inconnu | Élevé | Valider les coûts produit par catégorie avant toute extension |
+| Recommandation au plafond | Élevé | Aucun automatisme +25 % sans mesure A/B |
+| Uplift auto-évalué | Élevé | Ne pas engager de cible de résultat hors test |
+| Effet concurrentiel ou durable | Moyen | Observer au moins deux mois et suivre les retours |
+| Extrapolation hors données | Élevé | Paliers de +5 %, +12 %, puis +25 % maximum |
+
+### Plan de déploiement recommandé
+
+1. **Vague 1 -- test :** 10 à 20 % du portefeuille, répartis par catégories,
+   avec allocation aléatoire entre produits traités et témoins.
+2. **Amortissement :** commencer à +12,5 % en moyenne, avec une bande entre
+   zéro et +25 % au maximum.
+3. **Mesure :** profit, marge réelle, volume, chiffre d'affaires, conversion,
+   annulation et retour concurrent ; durée minimale de deux mois.
+4. **Critère d'extension :** hausse statistiquement significative du profit
+   observé, sans dégradation commerciale anormale et sans coût caché.
+5. **Réestimation :** mettre à jour l'élasticité après chaque vague afin que
+   les prix observés du test deviennent de nouvelles données intra-produit.
+
+**Conclusion :** le projet fournit une boussole économique crédible, mais pas
+encore une preuve de rentabilité. La décision attendue est donc un pilote
+financé et mesurable, pas un déploiement tarifaire immédiat.
 
 ### Elasticite-prix : ce que disent les donnees
 
