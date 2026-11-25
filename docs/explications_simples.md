@@ -3,15 +3,15 @@
 Ce document explique **tout** ce qui a été fait, sans supposer que vous
 connaissez le vocabulaire. Chaque idée est donnée deux fois :
 
-> 🧒 **L'image simple** — comme on l'expliquerait à un enfant
+> **L'image simple** — comme on l'expliquerait à un enfant
 >
-> 🎓 **Le mot technique** — le terme que vous verrez dans le code et le README
+> **Le mot technique** — le terme que vous verrez dans le code et le README
 
 ---
 
 ## Partie 1 — L'histoire du projet en une page
 
-🧒 **L'image simple**
+**L'image simple**
 
 Imaginez une grande foire où des milliers de marchands vendent des jouets, des
 montres, des draps, des parfums. Chaque marchand met un prix sur son objet.
@@ -32,7 +32,7 @@ perds ? »*
 
 C'est **la** question du projet. Tout le reste sert à y répondre correctement.
 
-🎓 **Le mot technique**
+**Le mot technique**
 
 Le projet estime l'**élasticité-prix de la demande**, puis maximise le profit
 `(prix − coût) × quantité vendue` sous contraintes.
@@ -41,7 +41,7 @@ Le projet estime l'**élasticité-prix de la demande**, puis maximise le profit
 
 ## Partie 2 — Le piège principal (et pourquoi c'est difficile)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Vous voulez savoir si augmenter le prix des glaces fait vendre moins de glaces.
 
@@ -57,7 +57,7 @@ même temps.
 
 Si on ne fait pas attention à la chaleur, on croit une chose fausse.
 
-🎓 **Le mot technique**
+**Le mot technique**
 
 - Le prix est **endogène** : il n'est pas décidé au hasard, il réagit à la
   demande. **Endogène** = « décidé à l'intérieur du système ».
@@ -71,7 +71,7 @@ Si on ne fait pas attention à la chaleur, on croit une chose fausse.
 
 ## Partie 3 — La solution : comparer une chose avec elle-même
 
-🧒 **L'image simple**
+**L'image simple**
 
 Vous voulez savoir si les épinards font grandir.
 
@@ -86,7 +86,7 @@ pas parce qu'il est « quelqu'un d'autre ».
 C'est exactement ce qu'on a fait avec les prix : au lieu de comparer une montre
 et un livre, on compare **la même montre en mars et la même montre en avril**.
 
-🎓 **Le mot technique**
+**Le mot technique**
 
 - Comparer un objet avec lui-même dans le temps = **effets fixes produit**
   (*product fixed effects*).
@@ -112,7 +112,7 @@ Ce qui reste, c'est **uniquement** la décision de prix du vendeur.
 
 ## Partie 4 — La découverte la plus importante du projet
 
-🧒 **L'image simple**
+**L'image simple**
 
 Après avoir tout nettoyé, on a mesuré une chose surprenante.
 
@@ -131,7 +131,7 @@ C'est pareil pour les prix : **seulement 1 % des différences de prix viennent
 d'un vendeur qui change son prix.** Les 99 % restants viennent juste du fait
 qu'une montre coûte plus cher qu'un livre.
 
-🎓 **Le mot technique**
+**Le mot technique**
 
 **Décomposition de la variance du log-prix** : seulement ~0.8 % de la variance
 est **intra-produit** (*within-product*). Le reste est **inter-produit**
@@ -145,7 +145,7 @@ si on ne le vise pas exprès, il est noyé.
 
 ## Partie 5 — Les logarithmes (le mot « log »)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Le « log », c'est une machine à **compresser les gros nombres**.
 
@@ -159,7 +159,7 @@ Mais surtout, le log a une propriété magique : **il transforme les
 pourcentages en additions simples**. « Le prix a augmenté de 10 % » devient une
 petite marche régulière, la même que le prix parte de 5 € ou de 500 €.
 
-🎓 **Le mot technique**
+**Le mot technique**
 
 On utilise `log(prix)` et `log(quantité)` pour trois raisons :
 
@@ -172,7 +172,7 @@ On utilise `log(prix)` et `log(quantité)` pour trois raisons :
 
 ## Partie 6 — L'élasticité et sa formule
 
-🧒 **L'image simple**
+**L'image simple**
 
 L'élasticité, c'est un seul chiffre qui répond à :
 
@@ -185,7 +185,7 @@ L'élasticité, c'est un seul chiffre qui répond à :
 
 Plus le chiffre est « gros en négatif », plus les clients sont sensibles au prix.
 
-🎓 **La formule**
+**La formule**
 
 ```
 élasticité  e  =  (variation en % de la quantité) / (variation en % du prix)
@@ -210,7 +210,7 @@ beaucoup au prix.
 
 ## Partie 7 — Six façons de mesurer, une seule bonne
 
-🧒 **L'image simple**
+**L'image simple**
 
 C'est comme mesurer la taille d'un enfant avec six instruments différents :
 
@@ -218,23 +218,23 @@ C'est comme mesurer la taille d'un enfant avec six instruments différents :
 |---|---|---|
 | Un mètre ruban tenu de travers | 0.02 m | on ne compare pas la même chose |
 | Un mètre ruban un peu mieux tenu | 0.02 m | pas mieux |
-| **Une toise bien droite** | **0.75 m** | ✅ la bonne mesure |
+| **Une toise bien droite** | **0.75 m** | la bonne mesure |
 | Une machine chère mal réglée | 0.12 m | une machine chère mal réglée reste fausse |
-| **La même machine, bien réglée** | **0.73 m** | ✅ elle confirme la toise |
+| **La même machine, bien réglée** | **0.73 m** | elle confirme la toise |
 | Une mesure sur les enfants les plus grands | 1.81 m | vraie, mais sur un groupe particulier |
 
 La leçon : **acheter une machine plus chère (= un modèle plus sophistiqué) ne
 sert à rien si on la tient de travers.** Il faut d'abord bien viser.
 
-🎓 **Les noms des six méthodes**
+**Les noms des six méthodes**
 
 | Nom technique | Ce que ça veut dire | Résultat |
 |---|---|---|
 | **OLS poolée** | régression toute simple, sans précaution | −0.02 |
 | **Effets fixes catégorie × semaine** | on regroupe par famille de produits et par semaine | −0.02 |
-| **Effets fixes produit × mois** | on compare chaque produit avec lui-même ✅ | **−0.75** |
+| **Effets fixes produit × mois** | on compare chaque produit avec lui-même | **−0.75** |
 | **DoubleML sans effets fixes** | intelligence artificielle mal ciblée | −0.12 |
-| **DoubleML avec effets fixes** | la même IA, bien ciblée ✅ | −0.73 |
+| **DoubleML avec effets fixes** | la même IA, bien ciblée | −0.73 |
 | **Poisson PPML** | méthode adaptée aux petits nombres, sur les best-sellers | −1.81 |
 
 - **OLS** = *Ordinary Least Squares*, « moindres carrés ordinaires ». C'est la
@@ -247,7 +247,7 @@ sert à rien si on la tient de travers.** Il faut d'abord bien viser.
 
 ## Partie 8 — Le calcul du prix idéal (règle de Lerner)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Il existe une recette de cuisine, vieille de presque 100 ans, qui donne le bon
 prix. Elle dit :
@@ -258,7 +258,7 @@ prix. Elle dit :
 Si tes clients partent dès que tu augmentes → petite marge.
 Si tes clients restent quoi qu'il arrive → grosse marge.
 
-🎓 **La formule (règle de Lerner)**
+**La formule (règle de Lerner)**
 
 ```
 (prix − coût) / prix  =  −1 / e
@@ -285,7 +285,7 @@ prix* = coût / (1 + 1/e)
 sommet, la pente est nulle. En mettant la pente à zéro et en résolvant, on
 tombe sur cette égalité. C'est une **condition d'optimalité**.
 
-⚠️ **Attention, un piège important.** Cette formule ne marche que si
+**Attention, un piège important.** Cette formule ne marche que si
 l'élasticité est **plus négative que −1**. Sur Olist, elle vaut −0.75 : la
 formule dit alors « augmente le prix à l'infini », ce qui n'a aucun sens. C'est
 pour ça qu'on a mis des **garde-fous** (partie 12).
@@ -294,7 +294,7 @@ pour ça qu'on a mis des **garde-fous** (partie 12).
 
 ## Partie 9 — Le « seuil de rentabilité » (le diagnostic le plus utile)
 
-🧒 **L'image simple**
+**L'image simple**
 
 On retourne la recette précédente. Au lieu de demander « quel prix ? », on
 demande :
@@ -307,7 +307,7 @@ c'est que mon prix est trop bas ou trop haut.
 C'est comme une balance : si l'aiguille penche à gauche, ajoute ; si elle penche
 à droite, enlève.
 
-🎓 **La formule**
+**La formule**
 
 ```
 élasticité de rentabilité  =  −1 / taux de marge
@@ -334,11 +334,11 @@ C'est le résultat principal du projet, et il tient en une division.
 profit(prix) = (prix − coût) × quantité_vendue(prix)
 ```
 
-🧒 Ce que je gagne sur **un** objet, multiplié par le **nombre** d'objets
+*En image :* Ce que je gagne sur **un** objet, multiplié par le **nombre** d'objets
 vendus. Les deux se battent : si le prix monte, le premier terme grandit mais
 le second rétrécit.
 
-🎓 C'est la **fonction objectif** qu'on maximise.
+*En termes techniques :* C'est la **fonction objectif** qu'on maximise.
 
 ---
 
@@ -348,9 +348,9 @@ le second rétrécit.
 quantité(prix) = quantité_actuelle × (nouveau_prix / prix_actuel) ^ élasticité
 ```
 
-🧒 Une machine qui répond : « si tu mets ce prix-là, tu vendras tant ».
+*En image :* Une machine qui répond : « si tu mets ce prix-là, tu vendras tant ».
 
-🎓 **Demande à élasticité constante** (*constant elasticity demand*). Le `^` est
+**Demande à élasticité constante** (*constant elasticity demand*). Le `^` est
 une puissance. Comme l'élasticité est négative, plus le prix monte, plus le
 résultat descend.
 
@@ -363,7 +363,7 @@ correction = moyenne( exp(erreurs du modèle) )
 quantité_finale = exp(prédiction) × correction
 ```
 
-🧒 Le modèle travaille en « nombres compressés » (les logs). Pour revenir aux
+*En image :* Le modèle travaille en « nombres compressés » (les logs). Pour revenir aux
 vrais nombres, on décompresse. Mais **décompresser une moyenne ne donne pas la
 moyenne des décompressés** — c'est un piège mathématique. Sans correction, on
 sous-estime toujours les ventes.
@@ -371,7 +371,7 @@ sous-estime toujours les ventes.
 C'est comme la moyenne des tailles au carré : elle n'est pas égale au carré de
 la moyenne des tailles.
 
-🎓 C'est l'**inégalité de Jensen**. La correction s'appelle le **facteur de
+*En termes techniques :* C'est l'**inégalité de Jensen**. La correction s'appelle le **facteur de
 smearing de Duan**. Ici il vaut **1.117**, c'est-à-dire qu'on sous-estimerait
 les ventes d'environ **10 %** sans elle.
 
@@ -384,7 +384,7 @@ poids  w = τ² / (τ² + σ²)
 élasticité_finale = w × élasticité_mesurée + (1 − w) × élasticité_moyenne
 ```
 
-🧒 Imaginez qu'on note la gentillesse des enfants de deux classes :
+*En image :* Imaginez qu'on note la gentillesse des enfants de deux classes :
 
 - Classe A : 200 enfants observés pendant un an → la note est **fiable**.
 - Classe B : 3 enfants observés pendant 10 minutes → la note est **du hasard**.
@@ -396,7 +396,9 @@ moyenne ».
 Le rétrécissement fait exactement ça, automatiquement : **plus une mesure est
 incertaine, plus on la ramène vers la moyenne générale.**
 
-🎓 - `σ²` (sigma carré) = l'incertitude de **cette** mesure.
+*En termes techniques :*
+
+- `σ²` (sigma carré) = l'incertitude de **cette** mesure.
 - `τ²` (tau carré) = les **vraies** différences entre catégories.
 - Le poids `w` est entre 0 et 1 : proche de 1 = « je fais confiance à cette
   catégorie », proche de 0 = « je la ramène vers la moyenne ».
@@ -409,7 +411,7 @@ vend »), ce qui est absurde et ferait recommander des hausses de prix infinies.
 
 ### 10.5 Le Double Machine Learning
 
-🧒 **L'image simple**
+**L'image simple**
 
 Vous voulez savoir si le sport rend heureux. Problème : les gens riches font
 plus de sport **et** sont plus heureux. L'argent brouille tout.
@@ -421,7 +423,7 @@ La méthode :
    « débarrassés de l'argent ».
 4. On regarde s'il reste un lien entre les deux restes.
 
-🎓 On appelle ces « restes » des **résidus**. La méthode s'appelle
+*En termes techniques :* On appelle ces « restes » des **résidus**. La méthode s'appelle
 **orthogonalisation**, et la découpe en morceaux pour éviter de tricher
 s'appelle le **cross-fitting**. Le théorème derrière porte le nom de
 **Frisch-Waugh-Lovell (FWL)**.
@@ -438,14 +440,14 @@ donne −0.12 (faux). Appliqué **après** avoir enlevé les effets fixes, il do
 quantité = exp(a + e × log(prix) + ...)
 ```
 
-🧒 La moitié des produits se vend **exactement 1 fois** par mois. Or `log(1) = 0`,
+*En image :* La moitié des produits se vend **exactement 1 fois** par mois. Or `log(1) = 0`,
 donc dans le monde compressé, ces produits « valent zéro » et n'apportent
 presque aucune information.
 
 Le modèle de Poisson est fait pour compter des petits nombres (1, 2, 3 objets),
 comme compter des bonbons plutôt que peser de la farine.
 
-🎓 **PPML** = *Poisson Pseudo-Maximum Likelihood*. Il modélise directement le
+**PPML** = *Poisson Pseudo-Maximum Likelihood*. Il modélise directement le
 comptage. Ici il a été appliqué aux 600 produits les plus vendus et donne
 **−1.81** : les best-sellers sont beaucoup plus sensibles au prix que la
 moyenne. C'est logique — ce sont eux que les clients comparent.
@@ -454,7 +456,7 @@ moyenne. C'est logique — ce sont eux que les clients comparent.
 
 ### 10.7 Les notes du modèle (RMSE, MAE, R²)
 
-🧒 Le modèle devine « tu vendras 10 objets », la vérité est 12. Il s'est trompé
+*En image :* Le modèle devine « tu vendras 10 objets », la vérité est 12. Il s'est trompé
 de 2. On fait ça pour des milliers de produits et on résume :
 
 | Note | Ce que ça mesure | Bon = |
@@ -463,7 +465,7 @@ de 2. On fait ça pour des milliers de produits et on résume :
 | **RMSE** | pareil, mais **punit fort** les grosses erreurs | petit |
 | **R²** | le % de ce qui est expliqué (0 = rien, 1 = tout) | grand |
 
-🎓 **MAE** = *Mean Absolute Error*. **RMSE** = *Root Mean Squared Error* (on met
+**MAE** = *Mean Absolute Error*. **RMSE** = *Root Mean Squared Error* (on met
 les erreurs au carré avant de moyenner, d'où la punition des gros écarts).
 **R²** = coefficient de détermination.
 
@@ -473,7 +475,7 @@ Notre modèle : RMSE = 0.554, R² = 0.40 (il explique 40 % de ce qui se passe).
 
 ## Partie 11 — Le piège du « bon modèle inutile »
 
-🧒 **L'image simple**
+**L'image simple**
 
 Un enfant doit deviner combien de glaces on vendra demain. Il répond toujours
 « autant qu'hier ». **Il a souvent raison !** Ses notes sont excellentes.
@@ -488,7 +490,7 @@ C'est exactement ce qui est arrivé avec un de nos modèles (`ridge_loglog`) : i
 affichait le **meilleur gain simulé (+60 %)** et il a été **rejeté**, parce que
 sa courbe de demande était plate.
 
-🎓 On a donc ajouté des métriques spécifiques :
+*En termes techniques :* On a donc ajouté des métriques spécifiques :
 
 - **élasticité implicite** : est-ce que le modèle réagit au prix ?
 - **part de courbes décroissantes** : est-ce qu'il réagit dans le **bon sens** ?
@@ -507,7 +509,7 @@ Un modèle plus précis mais économiquement absurde est écarté.
 
 ## Partie 12 — Les garde-fous (et pourquoi ils sont indispensables)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Le calcul dit : « augmente ton prix de 200 % ! »
 
@@ -524,7 +526,7 @@ Alors on met des barrières :
 | **Volume minimum** | ne pas perdre plus de 30 % des clients | sinon on disparaît du magasin |
 | **Amortissement** | ne faire que la moitié du chemin | au cas où on se tromperait |
 
-🎓 Termes techniques : *trust region* (bande de prix), *margin floor*,
+*En termes techniques :* Termes techniques : *trust region* (bande de prix), *margin floor*,
 *volume guardrail*, *damping*.
 
 **Pourquoi l'amortissement marche si bien :** la courbe de profit est **plate**
@@ -541,7 +543,7 @@ doucement et mesurez »**.
 
 ## Partie 13 — La triche involontaire (fuite de données)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Un élève passe un examen. Sans le vouloir, le professeur a laissé un bout de la
 réponse au dos de la feuille de questions. L'élève a 20/20.
@@ -558,14 +560,14 @@ contient un morceau de la réponse.
 **Correction :** on ne garde que ces informations **du mois d'avant**. Le mois
 d'avant est déjà passé, il ne peut pas contenir la réponse d'aujourd'hui.
 
-🎓 C'est une **fuite de données** (*data leakage*). Six tests automatiques
+*En termes techniques :* C'est une **fuite de données** (*data leakage*). Six tests automatiques
 vérifient en permanence qu'elle ne revient pas.
 
 ---
 
 ## Partie 14 — Pourquoi couper les données par date
 
-🧒 **L'image simple**
+**L'image simple**
 
 Pour vérifier qu'un élève sait faire des additions, on ne lui donne pas les
 mêmes exercices que ceux qu'il a appris par cœur. On lui en donne des
@@ -578,13 +580,13 @@ mois qu'il n'a jamais vus.
 Si on mélangeait au hasard, le modèle verrait mai 2018 pour deviner mars 2018 —
 il verrait le futur, et ses notes seraient truquées.
 
-🎓 **Split temporel** (*temporal split*), par opposition au *random split*.
+**Split temporel** (*temporal split*), par opposition au *random split*.
 
 ---
 
 ## Partie 15 — Toute la « boîte à outils » expliquée
 
-🧒 **L'image simple : la boulangerie**
+**L'image simple : la boulangerie**
 
 | Outil | Dans la boulangerie |
 |---|---|
@@ -599,7 +601,7 @@ il verrait le futur, et ses notes seraient truquées.
 | **La CI/CD** | l'inspecteur qui vient à chaque changement de recette |
 | **CML** | l'inspecteur qui **écrit son rapport sur la porte** pour que tous le voient |
 
-🎓 **Les vrais noms**
+**Les vrais noms**
 
 | Terme | Définition simple |
 |---|---|
@@ -638,7 +640,7 @@ il verrait le futur, et ses notes seraient truquées.
 
 ## Partie 17 — Ce qu'on ne sait PAS (aussi important)
 
-🧒 **L'image simple**
+**L'image simple**
 
 Un bon cuisinier vous dit aussi ce qu'il n'a pas pu goûter.
 
@@ -650,7 +652,7 @@ Un bon cuisinier vous dit aussi ce qu'il n'a pas pu goûter.
 | **Le long terme** | On mesure la réaction du mois suivant, pas celle de l'année suivante. |
 | **Les nouveautés** | On n'a gardé que les produits vendus au moins 3 mois. |
 
-🎓 On appelle ça les **limites** ou les **hypothèses** du modèle. Les écrire
+*En termes techniques :* On appelle ça les **limites** ou les **hypothèses** du modèle. Les écrire
 n'est pas un aveu de faiblesse : un travail qui ne les liste pas est un travail
 en lequel on ne peut pas avoir confiance.
 

@@ -6,6 +6,10 @@ fonction du prix, puis choisir le prix qui maximise le profit.**
 De la donnée brute Kaggle jusqu'à une API et un dashboard conteneurisés, avec
 suivi d'expériences MLflow et pipeline CI/CD.
 
+**Rapport décisionnel** (direction commerciale) : [docs/rapport_decisionnel_pricing.md](docs/rapport_decisionnel_pricing.md)
+
+**Démarche commentée et pièges** : [docs/parcours_apprentissage.md](docs/parcours_apprentissage.md)
+
 ---
 
 ## Le problème, et pourquoi il est difficile

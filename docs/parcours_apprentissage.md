@@ -13,10 +13,10 @@ Ce projet a mobilisé quatre compétences distinctes :
 
 | Compétence | Poids réel | Où on l'apprend |
 |---|---|---|
-| **Savoir métier** (comment se fixe un prix, ce qu'est une marge) | ~30 % | ⚠️ presque nulle part |
+| **Savoir métier** (comment se fixe un prix, ce qu'est une marge) | ~30 % | presque nulle part |
 | **Inférence causale / économétrie** (identification, effets fixes) | ~40 % | cours d'économie, pas de data science |
-| **Machine learning** | ~15 % | ✅ partout |
-| **Ingénierie logicielle** (API, Docker, CI/CD, tests) | ~15 % | ✅ facilement |
+| **Machine learning** | ~15 % | partout |
+| **Ingénierie logicielle** (API, Docker, CI/CD, tests) | ~15 % | facilement |
 
 **Le constat qui compte :** la partie enseignée dans 90 % des formations de data
 science (le ML) représente ici 15 % du travail. Et c'est la partie qui aurait
@@ -103,7 +103,7 @@ demande :
 | **Assortiment** | l'ensemble des références proposées |
 | **Yield / revenue management** | pricing dynamique sur capacité fixe (avion, hôtel) |
 
-⚠️ **Le piège des ruptures de stock.** Si un produit n'est plus disponible, la
+**Le piège des ruptures de stock.** Si un produit n'est plus disponible, la
 demande observée tombe à zéro — mais la demande *réelle* ne l'est pas. Un modèle
 naïf conclut « le prix était trop élevé ». Sur des données de retail réelles,
 c'est **la première chose à vérifier**. Olist n'a pas ce problème (chaque ligne
